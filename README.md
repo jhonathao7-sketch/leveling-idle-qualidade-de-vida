@@ -1,135 +1,75 @@
-# Leveling Idle - qualidade de vida
+# Leveling Idle — QoL, modo seguro
 
-Extensão de qualidade de vida para `https://levelingidle2d.com.br/`.
+Fork de [lioncodetech/leveling-idle-qualidade-de-vida](https://github.com/lioncodetech/leveling-idle-qualidade-de-vida)
+com as automações que simulam um jogador desligadas.
 
-Na 0.14.0, a extensão ganhou fila do Codex, missões, chefe diário, Torre Infinita, Forja com
-reservas e organização segura do time e dos equipamentos das sombras. A diária continua lembrando
-o resgate pelo dia de Brasília para não reabrir a janela até a próxima virada.
+A extensão original é um bot. Este fork mantém só a parte de interface.
 
-## Recursos
+---
 
-- painel resumido com personagem, HP, mana, XP, alvo, mochila, dano da party e ping;
-- o painel muda de tamanho pela alça do canto, e a largura e a altura ficam guardadas junto com a
-  posição; minimizado ele volta a encolher até o cabeçalho;
-- modo minimizado com personagem, HP e alvo;
-- modo leve que remove animações e transições;
-- opção separada para ocultar o cenário mantendo o HUD e o combate;
-- intervalo configurável para a atualização do painel;
-- posição, visibilidade e configurações guardadas por conta;
-- `Alt+Q` mostra ou esconde o painel.
-- `Alt+G` desliga os gráficos (liga o modo leve sem animações e sem cenário) e `Alt+H` liga de novo; o HUD e o combate continuam.
-  Com o cenário escondido o **NPC desaparece junto** — ele faz parte da cena —, por isso a ida ao
-  NPC e o botão de testar caminho devolvem o cenário enquanto duram e escondem-no outra vez no fim,
-  erro incluído. A sua preferência não é tocada: é uma suspensão, não um interruptor, e por isso
-  duas idas encavalitadas não devolvem o cenário a meio da primeira.
-- distribuição automática dos pontos de status: escolha uma das 3 builds da classe que o jogo oferece ou monte a sua com um peso para cada atributo; sempre que houver pontos livres, a extensão abre a janela de Status, distribui, confirma e fecha a janela;
-- aba Equipamento: equipar os melhores pelo poder (botão "Equipar melhores" do jogo) ou pelos seus atributos preferidos, com peso e "exigir" para cada atributo das peças, a cada N minutos, uma vez por dia num horário ou uma vez por semana num dia e horário, e opcionalmente ao subir de nível;
-- build de talentos: uma lista em ordem de talentos e o nível de cada um; sempre que houver pontos de talento, a extensão abre a árvore, aprende na ordem e fecha a janela, pulando o que ainda estiver bloqueado.
-  Essa verificação aceita **faixas de horário**, quantas você quiser: em cada faixa a extensão
-  sorteia uma hora, uma vez por dia, e só confere nessa hora — por exemplo uma faixa das 10h às 11h
-  e outra das 15h às 16h. Sem faixa nenhuma, nada muda: continua a conferir sempre que houver
-  pontos novos. As faixas existem porque o saldo de pontos que a build não cobre (talento no
-  máximo, pré-requisito que falta, árvore que acabou) fica parado no jogo, e com ele a extensão
-  reabria a árvore de 20 em 20 segundos para não fazer nada. É a mesma máquina das faixas das
-  missões, com chaves próprias: as duas listas não partilham a hora sorteada nem a marca de
-  "já foi hoje";
-- escada de caçadas por marco de nível, lendo todas as páginas e dificuldades da lista, mantendo a caça atual sem opção segura;
-- modo Codex separado por Monstros, Loots, Equipamentos e Aprimoramento, priorizando o próximo marco incompleto;
-- aceita missões disponíveis e resgata automaticamente as recompensas concluídas, sem abandonar ou trocar missões;
-- as missões aceitam **faixas de horário, quantas você quiser**: em cada faixa a extensão sorteia
-  uma hora, uma vez por dia, e é nessa hora que confere. Duas faixas — uma de manhã e outra à
-  noite — apanham o que só fica pronto mais tarde, coisa que uma visita única nunca apanharia. O
-  painel mostra a hora que saiu hoje em cada faixa. Sem faixa nenhuma, nada muda: continua a
-  conferir de 5 em 5 minutos. A faixa é marcada como feita antes de a verificação começar, para
-  que uma janela que não abre não vire uma tentativa a cada volta do laço até o fim do dia;
-- relê os botões das árvores de talentos após cada troca, incluindo abas posteriores como Ambição;
-- agenda o chefe diário por rank e a Torre Infinita por margem de poder, usando o avanço e a
-  condição de parada do próprio jogo. O horário de cada um é uma **faixa** de duas caixas (por
-  exemplo 10:00 e 12:00): todos os dias a extensão sorteia uma hora dentro dela e é nessa hora que
-  entra, e o painel mostra a hora que saiu hoje. O sorteio é feito uma vez por dia e fica guardado —
-  sortear a cada segundo cairia sempre no início da faixa. Mexer nas caixas sorteia outra vez na
-  hora, e duas caixas iguais valem como hora fixa, que é o que acontecia antes de haver faixa.
-  Ao abrir a janela do chefe ela
-  pergunta ao **jogo** se o rank de hoje já foi feito — pelo rótulo da aba, e sobretudo por não haver
-  mais o botão Enfrentar — e, se já foi, marca o dia e só fecha a janela. A marca local não bastava:
-  ela não sabe do chefe que você enfrentou à mão nem do que outra janela já fez, e sem isso a
-  extensão reabria a janela a cada minuto até à meia-noite sem nunca conseguir entrar. A janela
-  passou a fechar em todos os caminhos, incluindo o do erro. A ida ao chefe é **uma por dia** e
-  fica marcada antes de sair da caçada: antes o dia só era marcado ao entrar, e todo o caminho
-  que falhava deixava-o em branco — o tick voltava um minuto depois e o personagem passava o dia
-  a ser levado para a cidade e trazido de volta sem nunca jogar. Falhar gasta a ida do dia, cada
-  falha diz no painel que fica para amanhã, e o botão `Verificar chefe agora` repete-a à mão.
-  A Torre segue a mesma regra, incluindo quando desiste por poder insuficiente — era a falha que
-  mais se repetia, e cada repetição era uma viagem à cidade — e o `Verificar Torre agora` também
-  a repete à mão.
-  E porque um desafio obriga a sair da
-  caçada, a extensão guarda qual era — lê o cartão **live** na lista antes de sair, que é a única
-  fonte do nome — e volta a ela no fim, fechando a janela do desafio e a lista. Antes o
-  personagem ficava parado na cidade a ganhar nada até a escada reparar nisso, e com a escada
-  desligada ficava ali para sempre. Quem **entrou** no desafio não é arrancado de volta: a volta
-  só acontece quando não se entrou, e acontece dentro da vez da fila;
-- explica no painel que o descanso é offline e mantém reservas pagas do Hotel sob controle manual;
-- roda várias abas do Codex em fila, encanta somente peças vestidas até o limite e as reservas escolhidas, e organiza time/equipamentos das sombras sem liberar ou fundir nenhuma;
-- compra de poções no NPC da cidade: grava o caminho até ele uma vez e, quando a poção acaba ou a cada N minutos, volta à cidade, refaz o caminho, completa cada item até a quantidade escolhida só com ouro, nas abas Consumíveis e Essências (nunca na de diamantes), e fecha a loja. Quando o jogo pede
-  confirmação da compra, a extensão confirma: espera pelo modal até 4 s em vez de o espiar uma
-  única vez — era aí que a compra se perdia, e ela dizia "a compra não apareceu" sem nada ter
-  sido comprado — e depois espera que a quantidade na mochila mude, que é a prova de que o
-  servidor aceitou. Só se clica **dentro de um modal** e nunca num cartão da loja, porque o
-  `Comprar` do cartão dá pelo mesmo nome e clicá-lo outra vez comprava em dobro; e nenhum sim
-  que fale de diamante, premium, cristais, pix ou R$ é clicado, nem no texto nem no rótulo
-  oculto do botão. No fim da ida a extensão volta à **mesma caçada** em que estava, como nos
-  desafios: antes a volta era a escada a escolher, e só com a escada ligada — ia para a caçada
-  que ela preferisse, não para aquela em que você estava, e com a escada desligada ficava na
-  cidade. A escada passou a ser só a rede para quem começou a compra já na cidade;
-- venda de equipamento ao Brok na ida ao NPC ou com a mochila cheia, até a raridade escolhida, nunca materiais nem peças travadas;
-- ao chegar ao NPC a extensão fala com ele pela **tecla E**, como o jogador faz, em vez de clicar:
-  o jogo manda `interact` sem coordenada e quem atende é a proximidade, então não há ponto para
-  errar — e um clique perdido no cenário mexeria o personagem para longe. O clique em volta do NPC
-  continua lá, mas só como último recurso;
-- o caminho até o NPC é repetido com o **compasso variado**: as pausas entre as pernas mudam muito
-  de uma ida para a outra, e o tempo de tecla premida quase nada (±3%), porque tecla premida é
-  distância. O caminho guardado continua sendo o que você andou;
-- e se mesmo assim a loja não abrir, ela **chega mais perto sozinha**: anda mais um bocadinho nos
-  dois sentidos que o caminho mais andou e aperta E de novo, até três vezes. O erro de chegada tem
-  sinal — um caminho chega sempre curto, nunca longo, porque cada perna recomeça a aceleração —
-  então o conserto é continuar, e não procurar em volta;
-- e se nada disso abrir a loja, ela **recarrega a página e tenta mais uma vez** — no máximo duas
-  vezes por hora. O teto existe porque o defeito que isto conserta e o defeito que isto pode causar
-  são o mesmo: com o NPC movido ou o jogo em manutenção, recarregar sem limite vira um laço que
-  recarrega para sempre e nunca diz o que está errado. O pedido fica guardado no navegador, porque
-  nada em memória sobrevive a um recarregamento, e é apagado antes da segunda tentativa começar; um
-  pedido com mais de cinco minutos é ignorado, para que um F5 seu no dia seguinte não mande a
-  extensão sair a comprar sozinha. A segunda tentativa espera o jogo ficar de pé e respeita a pausa
-  geral. Dá para desligar na aba Suprimentos;
-- poções por percentual, mochila/depósito e preparação de venda;
-- reviver sozinho ao cair na caçada: escolha o Reviver mais barato que houver, o melhor, ou um
-  fixo, com teto de quantos por hora. Reviver **gasta um item da mochila** — por isso a opção
-  começa desligada, nunca troca de item por conta própria quando o escolhido acaba e, alcançado o
-  teto, deixa a contagem de 10 segundos correr e o jogo levar você para Seul, que é o que já
-  acontecia. O XP perdido na queda é da morte e nenhum Reviver desfaz;
-- **resgata a recompensa diária de login sozinha**: quando o jogo acende o aviso, ela abre a
-  janela, carrega em Resgatar e confere que resgatou mesmo antes de dar por feito. Quem manda é o
-  sinal do jogo, não a marca guardada aqui — se a marca se enganar (relógio mexido, conta aberta
-  noutra máquina, dia que virou com o jogo fechado), ela resgata na mesma. Não depende do
-  interruptor das Rotinas: receber o que o jogo oferece de graça não é uma ação de risco;
-- **fila: uma automação de cada vez.** Antes, cada automação só olhava a própria bandeira, e por
-  isso o chefe diário podia começar no meio da ida ao NPC — duas a clicar na mesma tela, cada uma a
-  fechar a janela da outra. Agora quem chega e encontra alguém a trabalhar **espera a vez**, por
-  ordem de chegada, e o painel diz quem a tem e quem está na fila. Quem espera demais (cinco
-  minutos) desiste por agora em vez de ficar preso, e uma vez que passe dos dez minutos é dada por
-  abandonada, para que um erro fora do alcance do `finally` não tranque tudo para sempre. A
-  **caçada não tem prioridade**: ela não toma a vez de ninguém e não se mexe enquanto houver alguém
-  a trabalhar ou à espera — trocar de caçada um minuto depois dá no mesmo, mas abrir a lista de
-  caçadas por cima da loja fecha a janela de quem está a comprar. No manual, quem manda é você;
-- monitor da party, diária, eventos, guerra de time e fadiga;
-- a mochila cheia e o limite de fadiga também voltam à caçada, mas não na hora: estas duas saem da
-  caçada e **ficam** — a mochila até ser esvaziada, a fadiga até o descanso, que no jogo só corre
-  offline. A extensão guarda onde estava e espera pela condição que a tirou de lá: a mochila abaixo
-  do limite, ou a fadiga abaixo do limite **com a pausa já levantada**. Voltar antes seria desfazer
-  o que a pausa foi fazer. Essa volta corre mesmo com tudo pausado — é a pausa que ela espera que
-  levante — e pede a vez na fila como qualquer outra automação; se você voltar à caçada sozinho, a
-  memória morre em vez de o arrastar mais tarde. É memória da sessão: recarregar a página perde-a;
-- pausa geral, registro das ações e bloqueio de botões premium;
-- exportação e importação das configurações em arquivo, para levar a outra janela; entre classes diferentes, a build de status e os pesos do equipamento não vêm.
+## O que foi desligado
 
-O pacote não troca personagem. A confirmação da venda permanece manual para impedir perda acidental. Automações que alteram o jogo começam desligadas.
+| Máquina | Por quê |
+|---|---|
+| Gravação e repetição de caminho | anda com o personagem por eventos sintéticos, com variação de compasso calibrada para não parecer script |
+| Compra e venda automática no NPC | depende do caminho acima; sai da caçada, vai à cidade e volta |
+| Recarregamento automático da página | `location.reload()` quando a loja não abre |
+| Entrada automática em chefe diário e Torre | sai da caçada em horário sorteado e entra sozinho |
+
+Como cada uma foi implementada está em **[COMO-FUNCIONA.md](COMO-FUNCIONA.md)** — o estudo foi
+preservado, só o comportamento saiu.
+
+## O que ficou
+
+Painel e resumo (HP, mana, XP, alvo, mochila, ping), modo leve, ocultar cenário, `Alt+Q` para
+mostrar/esconder, distribuição de pontos de atributo pela build, build de talentos, alerta de
+party e resgate da recompensa diária de login.
+
+São coisas que leem a tela ou clicam num botão da janela que você já abriria.
+
+## Risco médio, continua disponível e desligado de fábrica
+
+Escada de caçadas, Codex, Forja, organização de sombras e equipar automático. Não andam com o
+personagem, mas gastam recursos ou trocam sua caçada. Ligue conscientemente.
+
+---
+
+## Instalar
+
+1. baixe ou clone este repositório;
+2. `chrome://extensions` → ligue **Modo do desenvolvedor**;
+3. **Carregar sem compactação** → aponte para a pasta.
+
+## Reverter ao original
+
+Em `leveling.js`, linha ~16:
+
+```js
+const MODO_SEGURO = true;   // false devolve tudo que o upstream faz
+```
+
+---
+
+## Revisão de segurança
+
+Feita sobre o commit `6ca23d7` do upstream (v0.25.0, 815 linhas, sem ofuscação):
+
+- permissões: **só `storage`**; sem cookies, abas, webRequest ou `host_permissions`;
+- roda **só** em `levelingidle2d.com.br/*`;
+- **zero chamadas de rede** — nenhum `fetch`, `XHR`, `WebSocket`, `sendBeacon`, nenhuma URL
+  externa no arquivo inteiro;
+- sem `eval`, `new Function` ou carregamento de script remoto;
+- não lê token, cookie nem senha; o `localStorage` guarda só a própria configuração;
+- o autor bloqueia por conta própria qualquer clique em botão que mencione diamante, premium,
+  cristal, pix ou R$, e compra apenas com ouro.
+
+Nada malicioso. O risco é de **banimento**, não de malware: o jogo tem Mercado e RMT, e operador
+de jogo com economia real costuma ser agressivo com automação. Confirme as regras antes de usar.
+
+O modo seguro também remove o listener global de `keydown`/`keyup`/`pointerdown` que existia só
+para gravar caminho.
+
+## Licença
+
+O upstream **não tem arquivo de licença**, então o padrão é todos os direitos reservados. Este
+fork existe para estudo e uso próprio. Não republique como projeto independente.

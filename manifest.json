@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Leveling Idle - qualidade de vida",
+  "name": "Leveling Idle - QoL (modo seguro)",
   "version": "0.25.0",
-  "description": "Painel leve e automações seguras para caçadas, poções, mochila, party, rotinas e fadiga.",
+  "description": "Painel, resumo, pontos de atributo e talentos. Sem andar pelo mapa, comprar no NPC, recarregar a pagina ou entrar sozinho em chefe e Torre.",
   "permissions": [
     "storage"
   ],
